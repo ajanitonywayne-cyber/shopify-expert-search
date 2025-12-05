@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Your Shopify Expert</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #95BF47 0%, #5E8E3E 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .shopify-badge {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #5E8E3E;
+            z-index: 1000;
+        }
+
+        .shopify-badge img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            color: #5E8E3E;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .logo p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #95BF47;
+            box-shadow: 0 0 0 3px rgba(149, 191, 71, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #95BF47 0%, #5E8E3E 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(149, 191, 71, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #c33;
+            display: none;
+            font-size: 14px;
+        }
+
+        .expert-profile {
+            display: none;
+        }
+
+        .expert-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .expert-logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            object-fit: contain;
+            display: block;
+            background: #000;
+            padding: 20px;
+            border-radius: 50%;
+            border: 3px solid #95BF47;
+        }
+
+        .expert-photo {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            border: 4px solid #95BF47;
+            object-fit: cover;
+        }
+
+        .expert-name {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .expert-rating {
+            color: #95BF47;
+            font-size: 20px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .expert-experience {
+            color: #666;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .expert-section {
+            margin-bottom: 30px;
+        }
+
+        .expert-section h3 {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+        }
+
+        .expert-section h3::before {
+            content: '';
+            width: 4px;
+            height: 18px;
+            background: #95BF47;
+            margin-right: 12px;
+            border-radius: 2px;
+        }
+
+        .specialties {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .specialty-tag {
+            background: #f0f8e8;
+            color: #5E8E3E;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid #95BF47;
+        }
+
+        .bio {
+            color: #555;
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        .contact-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .contact-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 10px;
+            text-decoration: none;
+            text-align: center;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .email-btn {
+            background: #4285f4;
+            color: white;
+        }
+
+        .email-btn:hover {
+            background: #3367d6;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(66, 133, 244, 0.3);
+        }
+
+        .whatsapp-btn {
+            background: #25d366;
+            color: white;
+        }
+
+        .whatsapp-btn:hover {
+            background: #20ba5a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(37, 211, 102, 0.3);
+        }
+
+        .back-btn {
+            display: none;
+            margin-top: 20px;
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .back-btn:hover {
+            background: #e0e0e0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            .shopify-badge {
+                top: 10px;
+                right: 10px;
+                font-size: 10px;
+                padding: 8px 12px;
+            }
+
+            .shopify-badge img {
+                width: 20px;
+                height: 20px;
+            }
+
+            .logo h1 {
+                font-size: 24px;
+            }
+
+            .expert-name {
+                font-size: 24px;
+            }
+
+            .contact-buttons {
+                flex-direction: column;
+            }
+
+            .specialty-tag {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="shopify-badge">
+        <img src="https://cdn.shopify.com/shopifycloud/brochure/assets/brand-assets/shopify-logo-primary-logo-456baa801ee66a0a435671082365958316831c9960c480451dd0330bcdae304f.svg" alt="Shopify">
+        Verified Partner
+    </div>
+
+    <div class="container">
+        <div id="verifyForm">
+            <div class="logo">
+                <h1>Shopify Expert Finder</h1>
+                <p>Connect with certified Shopify specialists</p>
+            </div>
+
+            <div class="error" id="errorMsg"></div>
+
+            <div class="form-group">
+                <label for="partnerId">Enter Partner ID</label>
+                <input 
+                    type="text" 
+                    id="partnerId" 
+                    placeholder="Enter Partner ID"
+                    autocomplete="off"
+                >
+            </div>
+
+            <button class="btn" onclick="verifyPartner()">Verify Partner</button>
+        </div>
+
+        <div class="expert-profile" id="expertProfile">
+            <div class="expert-header">
+                <img src="https://i.postimg.cc/N0xFMxFk/Avex.jpg" class="expert-logo" alt="AVEX Logo">
+                <h2 class="expert-name">Derek Hamilton</h2>
+                <div class="expert-rating">⭐⭐⭐⭐⭐ 4.9/5.0</div>
+                <p class="expert-experience">10+ years of e-commerce & Shopify expertise</p>
+            </div>
+
+            <div class="expert-section">
+                <h3>Specialties</h3>
+                <div class="specialties">
+                    <span class="specialty-tag">Store Setup & Launch</span>
+                    <span class="specialty-tag">Theme Customization</span>
+                    <span class="specialty-tag">Product Migration</span>
+                    <span class="specialty-tag">Payment Integration</span>
+                    <span class="specialty-tag">SEO Optimization</span>
+                    <span class="specialty-tag">Marketing Automation</span>
+                    <span class="specialty-tag">App Integration</span>
+                    <span class="specialty-tag">Inventory Management</span>
+                    <span class="specialty-tag">Store Speed Optimization</span>
+                    <span class="specialty-tag">Conversion Rate Optimization</span>
+                    <span class="specialty-tag">Email Marketing Setup</span>
+                    <span class="specialty-tag">Multi-Channel Sales</span>
+                    <span class="specialty-tag">Dropshipping Solutions</span>
+                    <span class="specialty-tag">Store Redesign</span>
+                </div>
+            </div>
+
+            <div class="expert-section">
+                <h3>About Derek</h3>
+                <p class="bio">
+                    Welcome to a service built arond one goal: helping Shopify merchants create reliable, high-performing stores that support real business growth. My approach is centered on clarity, function, and long-term value, ensuring every decision made on your store directly contributes to stability, performance, and customer trust.
+                    <br><br>
+                    As a certified Shopify Partner, I focus on understanding your business needs, your audience, and the results you want to achieve. From store setup and theme customization to technical fixes, integrations, and optimization, every part of the process is handled with attention to detail and a clear strategy behind it. You get solutions built to make your store easier to manage, smoother for customers to navigate, and stronger in overall performance.
+                    <br><br>
+                    Whether you're launching a new store or improving an existing one, my goal is to provide support that feels structured, transparent, and genuinely helpful. You receive guidance, communication, and execution that keeps your store moving forward - not just for today, but for long run. 
+                    <br><br>
+                    My clients appreciate my commitment to clear communication, transparent pricing, and delivering results that exceed expectations. I don't just build stores—I build long-term partnerships focused on your continued success. Every project receives my personal attention, ensuring your store is optimized for performance, conversions, and sustainable growth.
+                    <br><br>
+                    Let's work together to bring your e-commerce vision to life and create a store that stands out in today's competitive marketplace.
+                </p>
+            </div>
+
+            <div class="contact-buttons">
+                <a href="mailto:derekshopifymerchantsolutions@gmail.com" class="contact-btn email-btn">
+                    📧 Email Me
+                </a>
+                <a href="https://wa.me/17272152944" class="contact-btn whatsapp-btn" target="_blank">
+                    💬 WhatsApp
+                </a>
+            </div>
+
+            <button class="btn back-btn" id="backBtn" onclick="goBack()">← Back to Search</button>
+        </div>
+    </div>
+
+    <script>
+        // Derek's profile data
+        const expert = {
+            name: 'Derek Hamilton',
+            partnerId: ['200415', '#200415']
+        };
+
+        function verifyPartner() {
+            const partnerId = document.getElementById('partnerId').value.trim();
+            const errorMsg = document.getElementById('errorMsg');
+            
+            if (!partnerId) {
+                showError('Please enter a Partner ID');
+                return;
+            }
+
+            // Check if entered ID matches Derek's partner IDs
+            const isValid = expert.partnerId.some(id => 
+                partnerId.toLowerCase() === id.toLowerCase()
+            );
+            
+            if (!isValid) {
+                showError('Invalid Partner ID. Please check and try again.');
+                return;
+            }
+
+            // Hide error and form, show profile
+            errorMsg.style.display = 'none';
+            document.getElementById('verifyForm').style.display = 'none';
+            document.getElementById('expertProfile').style.display = 'block';
+            document.getElementById('backBtn').style.display = 'block';
+        }
+
+        function showError(message) {
+            const errorMsg = document.getElementById('errorMsg');
+            errorMsg.textContent = message;
+            errorMsg.style.display = 'block';
+        }
+
+        function goBack() {
+            document.getElementById('expertProfile').style.display = 'none';
+            document.getElementById('backBtn').style.display = 'none';
+            document.getElementById('verifyForm').style.display = 'block';
+            document.getElementById('partnerId').value = '';
+            document.getElementById('errorMsg').style.display = 'none';
+        }
+
+        // Allow Enter key to submit
+        document.getElementById('partnerId').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                verifyPartner();
+            }
+        });
+    </script>
+</body>
+</html>
