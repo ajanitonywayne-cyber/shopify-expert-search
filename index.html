@@ -134,6 +134,89 @@
             font-size: 14px;
         }
 
+        .expert-selection {
+            display: none;
+        }
+
+        .selection-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .selection-title h2 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .selection-title p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .expert-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .expert-card {
+            background: #f9f9f9;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .expert-card:hover {
+            border-color: #95BF47;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(149, 191, 71, 0.2);
+        }
+
+        .card-logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #95BF47;
+            flex-shrink: 0;
+        }
+
+        .card-info {
+            flex: 1;
+        }
+
+        .card-company {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .card-name {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .card-tagline {
+            font-size: 13px;
+            color: #5E8E3E;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .card-rating {
+            font-size: 14px;
+            color: #95BF47;
+            margin-top: 5px;
+        }
+
         .expert-profile {
             display: none;
         }
@@ -147,21 +230,10 @@
             width: 120px;
             height: 120px;
             margin: 0 auto 20px;
-            object-fit: contain;
+            object-fit: cover;
             display: block;
-            background: #000;
-            padding: 20px;
             border-radius: 50%;
             border: 3px solid #95BF47;
-        }
-
-        .expert-photo {
-            width: 130px;
-            height: 130px;
-            border-radius: 50%;
-            margin: 0 auto 20px;
-            border: 4px solid #95BF47;
-            object-fit: cover;
         }
 
         .expert-name {
@@ -307,6 +379,11 @@
                 font-size: 24px;
             }
 
+            .expert-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
             .contact-buttons {
                 flex-direction: column;
             }
@@ -325,6 +402,7 @@
     </div>
 
     <div class="container">
+        <!-- Partner ID Entry Form -->
         <div id="verifyForm">
             <div class="logo">
                 <h1>Shopify Expert Finder</h1>
@@ -346,67 +424,127 @@
             <button class="btn" onclick="verifyPartner()">Verify Partner</button>
         </div>
 
+        <!-- Expert Selection -->
+        <div class="expert-selection" id="expertSelection">
+            <div class="selection-title">
+                <h2>Choose Your Expert</h2>
+                <p>Select a specialist to view their profile</p>
+            </div>
+
+            <div class="expert-cards">
+                <div class="expert-card" onclick="showExpert('derek')">
+                    <img src="https://i.postimg.cc/N0xFMxFk/Avex.jpg" class="card-logo" alt="Avex Design">
+                    <div class="card-info">
+                        <div class="card-company">Avex Design</div>
+                        <div class="card-name">Derek Hamilton</div>
+                        <div class="card-tagline">Technical Excellence & Store Optimization</div>
+                        <div class="card-rating">⭐ 4.9/5.0 • 10+ Years</div>
+                    </div>
+                </div>
+
+                <div class="expert-card" onclick="showExpert('kate')">
+                    <img src="https://i.postimg.cc/brDWWQzf/Kate-Sullivan.png" class="card-logo" alt="EastSide Co.">
+                    <div class="card-info">
+                        <div class="card-company">EastSide Co.</div>
+                        <div class="card-name">Kate Sullivan</div>
+                        <div class="card-tagline">Creative Design & Brand Strategy</div>
+                        <div class="card-rating">⭐ 5.0/5.0 • 8 Years</div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn back-btn" id="selectionBackBtn" onclick="goBackToForm()">← Back to Search</button>
+        </div>
+
+        <!-- Expert Profile -->
         <div class="expert-profile" id="expertProfile">
             <div class="expert-header">
-                <img src="https://i.postimg.cc/N0xFMxFk/Avex.jpg" class="expert-logo" alt="AVEX Logo">
-                <h2 class="expert-name">Derek Hamilton</h2>
-                <div class="expert-rating">⭐⭐⭐⭐⭐ 4.9/5.0</div>
-                <p class="expert-experience">10+ years of e-commerce & Shopify expertise</p>
+                <img id="profileLogo" class="expert-logo" src="" alt="">
+                <h2 class="expert-name" id="profileName"></h2>
+                <div class="expert-rating" id="profileRating"></div>
+                <p class="expert-experience" id="profileExperience"></p>
             </div>
 
             <div class="expert-section">
                 <h3>Specialties</h3>
-                <div class="specialties">
-                    <span class="specialty-tag">Store Setup & Launch</span>
-                    <span class="specialty-tag">Theme Customization</span>
-                    <span class="specialty-tag">Product Migration</span>
-                    <span class="specialty-tag">Payment Integration</span>
-                    <span class="specialty-tag">SEO Optimization</span>
-                    <span class="specialty-tag">Marketing Automation</span>
-                    <span class="specialty-tag">App Integration</span>
-                    <span class="specialty-tag">Inventory Management</span>
-                    <span class="specialty-tag">Store Speed Optimization</span>
-                    <span class="specialty-tag">Conversion Rate Optimization</span>
-                    <span class="specialty-tag">Email Marketing Setup</span>
-                    <span class="specialty-tag">Multi-Channel Sales</span>
-                    <span class="specialty-tag">Dropshipping Solutions</span>
-                    <span class="specialty-tag">Store Redesign</span>
-                </div>
+                <div class="specialties" id="profileSpecialties"></div>
             </div>
 
             <div class="expert-section">
-                <h3>About Derek</h3>
-                <p class="bio">
-                    Welcome to a service built arond one goal: helping Shopify merchants create reliable, high-performing stores that support real business growth. My approach is centered on clarity, function, and long-term value, ensuring every decision made on your store directly contributes to stability, performance, and customer trust.
-                    <br><br>
-                    As a certified Shopify Partner, I focus on understanding your business needs, your audience, and the results you want to achieve. From store setup and theme customization to technical fixes, integrations, and optimization, every part of the process is handled with attention to detail and a clear strategy behind it. You get solutions built to make your store easier to manage, smoother for customers to navigate, and stronger in overall performance.
-                    <br><br>
-                    Whether you're launching a new store or improving an existing one, my goal is to provide support that feels structured, transparent, and genuinely helpful. You receive guidance, communication, and execution that keeps your store moving forward - not just for today, but for long run. 
-                    <br><br>
-                    My clients appreciate my commitment to clear communication, transparent pricing, and delivering results that exceed expectations. I don't just build stores—I build long-term partnerships focused on your continued success. Every project receives my personal attention, ensuring your store is optimized for performance, conversions, and sustainable growth.
-                    <br><br>
-                    Let's work together to bring your e-commerce vision to life and create a store that stands out in today's competitive marketplace.
-                </p>
+                <h3 id="profileAboutTitle">About</h3>
+                <p class="bio" id="profileBio"></p>
             </div>
 
-            <div class="contact-buttons">
-                <a href="mailto:derekshopifymerchantsolutions@gmail.com" class="contact-btn email-btn">
-                    📧 Email Me
-                </a>
-                <a href="https://wa.me/17272152944" class="contact-btn whatsapp-btn" target="_blank">
-                    💬 WhatsApp
-                </a>
-            </div>
+            <div class="contact-buttons" id="profileContact"></div>
 
-            <button class="btn back-btn" id="backBtn" onclick="goBack()">← Back to Search</button>
+            <button class="btn back-btn" id="profileBackBtn" onclick="goBackToSelection()">← Back to Experts</button>
         </div>
     </div>
 
     <script>
-        // Derek's profile data
-        const expert = {
-            name: 'Derek Hamilton',
-            partnerId: ['200415', '#200415']
+        const experts = {
+            derek: {
+                name: 'Derek Hamilton',
+                company: 'Avex Design',
+                logo: 'https://i.postimg.cc/N0xFMxFk/Avex.jpg',
+                rating: '4.9/5.0',
+                ratingStars: '⭐⭐⭐⭐⭐',
+                experience: '10+ years of e-commerce & Shopify expertise',
+                specialties: [
+                    'Store Setup & Launch',
+                    'Theme Customization',
+                    'Payment Integration',
+                    'SEO Optimization',
+                    'App Integration',
+                    'Store Speed Optimization',
+                    'Conversion Rate Optimization',
+                    'Technical Support',
+                    'Migration Services',
+                    'API Integration',
+                    'Custom Functionality',
+                    'Performance Audits'
+                ],
+                bio: `Welcome to a service built around one goal: helping Shopify merchants create reliable, high-performing stores that support real business growth. My approach is centered on clarity, function, and long-term value, ensuring every decision made on your store directly contributes to stability, performance, and customer trust.
+                <br><br>
+                As a certified Shopify Partner with over a decade of technical experience, I focus on understanding your business needs, your audience, and the results you want to achieve. From store setup and theme customization to technical fixes, integrations, and optimization, every part of the process is handled with attention to detail and a clear strategy behind it.
+                <br><br>
+                Whether you're launching a new store or improving an existing one, my goal is to provide support that feels structured, transparent, and genuinely helpful. You receive guidance, communication, and execution that keeps your store moving forward - not just for today, but for the long run.
+                <br><br>
+                My clients appreciate my commitment to clear communication, transparent pricing, and delivering results that exceed expectations. I don't just build stores—I build long-term partnerships focused on your continued success. Every project receives my personal attention, ensuring your store is optimized for performance, conversions, and sustainable growth.`,
+                email: 'derekshopifymerchantsolutions@gmail.com',
+                whatsapp: '17272152944'
+            },
+            kate: {
+                name: 'Kate Sullivan',
+                company: 'EastSide Co.',
+                logo: 'https://i.postimg.cc/brDWWQzf/Kate-Sullivan.png',
+                rating: '5.0/5.0',
+                ratingStars: '⭐⭐⭐⭐⭐',
+                experience: '8 years of creative e-commerce excellence',
+                specialties: [
+                    'Brand Identity Design',
+                    'Custom Theme Design',
+                    'UI/UX Optimization',
+                    'Product Photography Direction',
+                    'Visual Merchandising',
+                    'Landing Page Design',
+                    'Marketing Campaign Design',
+                    'Social Media Integration',
+                    'Customer Journey Mapping',
+                    'A/B Testing Design',
+                    'Mobile Experience Design',
+                    'Conversion-Focused Layouts'
+                ],
+                bio: `At EastSide Co., I believe that exceptional design isn't just about aesthetics—it's about creating meaningful connections between your brand and your customers. With 8 years of focused expertise in e-commerce design and brand strategy, I specialize in crafting Shopify stores that don't just look beautiful, but convert browsers into loyal customers.
+                <br><br>
+                My approach combines artistic vision with data-driven strategy. Every design decision is intentional, backed by user behavior insights and conversion optimization principles. I work closely with merchants to understand their unique brand story, target audience, and business goals, then translate that into visual experiences that resonate and drive results.
+                <br><br>
+                From brand identity development to complete store designs, I handle every creative aspect with meticulous attention to detail. My clients consistently see improved engagement metrics, higher conversion rates, and stronger brand recognition after working with me. I pride myself on creating designs that are not only visually stunning but also intuitive, accessible, and optimized for the modern customer.
+                <br><br>
+                I believe in collaborative partnerships where your vision meets my expertise. With transparent communication, creative problem-solving, and a genuine passion for beautiful commerce, I'm here to help your brand stand out in a crowded marketplace. Let's create something exceptional together.`,
+                email: 'eastsideco.katie@gmail.com',
+                whatsapp: null
+            }
         };
 
         function verifyPartner() {
@@ -418,21 +556,61 @@
                 return;
             }
 
-            // Check if entered ID matches Derek's partner IDs
-            const isValid = expert.partnerId.some(id => 
-                partnerId.toLowerCase() === id.toLowerCase()
-            );
+            const validIds = ['19830415', '#19830415'];
+            const isValid = validIds.some(id => partnerId.toLowerCase() === id.toLowerCase());
             
             if (!isValid) {
                 showError('Invalid Partner ID. Please check and try again.');
                 return;
             }
 
-            // Hide error and form, show profile
             errorMsg.style.display = 'none';
             document.getElementById('verifyForm').style.display = 'none';
+            document.getElementById('expertSelection').style.display = 'block';
+            document.getElementById('selectionBackBtn').style.display = 'block';
+        }
+
+        function showExpert(expertKey) {
+            const expert = experts[expertKey];
+            
+            document.getElementById('profileLogo').src = expert.logo;
+            document.getElementById('profileName').textContent = expert.name;
+            document.getElementById('profileRating').textContent = `${expert.ratingStars} ${expert.rating}`;
+            document.getElementById('profileExperience').textContent = expert.experience;
+            document.getElementById('profileAboutTitle').textContent = `About ${expert.name.split(' ')[0]}`;
+            
+            const specialtiesContainer = document.getElementById('profileSpecialties');
+            specialtiesContainer.innerHTML = '';
+            expert.specialties.forEach(specialty => {
+                const tag = document.createElement('span');
+                tag.className = 'specialty-tag';
+                tag.textContent = specialty;
+                specialtiesContainer.appendChild(tag);
+            });
+            
+            document.getElementById('profileBio').innerHTML = expert.bio;
+            
+            const contactContainer = document.getElementById('profileContact');
+            contactContainer.innerHTML = '';
+            
+            const emailBtn = document.createElement('a');
+            emailBtn.href = `mailto:${expert.email}`;
+            emailBtn.className = 'contact-btn email-btn';
+            emailBtn.innerHTML = '📧 Email Me';
+            contactContainer.appendChild(emailBtn);
+            
+            if (expert.whatsapp) {
+                const whatsappBtn = document.createElement('a');
+                whatsappBtn.href = `https://wa.me/${expert.whatsapp}`;
+                whatsappBtn.className = 'contact-btn whatsapp-btn';
+                whatsappBtn.target = '_blank';
+                whatsappBtn.innerHTML = '💬 WhatsApp';
+                contactContainer.appendChild(whatsappBtn);
+            }
+            
+            document.getElementById('expertSelection').style.display = 'none';
             document.getElementById('expertProfile').style.display = 'block';
-            document.getElementById('backBtn').style.display = 'block';
+            document.getElementById('profileBackBtn').style.display = 'block';
         }
 
         function showError(message) {
@@ -441,15 +619,21 @@
             errorMsg.style.display = 'block';
         }
 
-        function goBack() {
-            document.getElementById('expertProfile').style.display = 'none';
-            document.getElementById('backBtn').style.display = 'none';
+        function goBackToForm() {
+            document.getElementById('expertSelection').style.display = 'none';
+            document.getElementById('selectionBackBtn').style.display = 'none';
             document.getElementById('verifyForm').style.display = 'block';
             document.getElementById('partnerId').value = '';
             document.getElementById('errorMsg').style.display = 'none';
         }
 
-        // Allow Enter key to submit
+        function goBackToSelection() {
+            document.getElementById('expertProfile').style.display = 'none';
+            document.getElementById('profileBackBtn').style.display = 'none';
+            document.getElementById('expertSelection').style.display = 'block';
+            document.getElementById('selectionBackBtn').style.display = 'block';
+        }
+
         document.getElementById('partnerId').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 verifyPartner();
