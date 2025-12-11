@@ -354,6 +354,45 @@
             background: #e0e0e0;
         }
 
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 5px solid rgba(149, 191, 71, 0.3);
+            border-top: 5px solid #95BF47;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 30px 20px;
@@ -396,6 +435,12 @@
     </style>
 </head>
 <body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div class="loading-text" id="loadingText">Loading...</div>
+    </div>
+
     <div class="shopify-badge">
         <img src="https://cdn.shopify.com/shopifycloud/brochure/assets/brand-assets/shopify-logo-primary-logo-456baa801ee66a0a435671082365958316831c9960c480451dd0330bcdae304f.svg" alt="Shopify">
         Verified Partner
@@ -564,53 +609,72 @@
                 return;
             }
 
-            errorMsg.style.display = 'none';
-            document.getElementById('verifyForm').style.display = 'none';
-            document.getElementById('expertSelection').style.display = 'block';
-            document.getElementById('selectionBackBtn').style.display = 'block';
+            showLoading('Verifying Partner ID...');
+            
+            setTimeout(() => {
+                hideLoading();
+                errorMsg.style.display = 'none';
+                document.getElementById('verifyForm').style.display = 'none';
+                document.getElementById('expertSelection').style.display = 'block';
+                document.getElementById('selectionBackBtn').style.display = 'block';
+            }, 3000);
         }
 
         function showExpert(expertKey) {
-            const expert = experts[expertKey];
+            showLoading('Loading Expert Profile...');
             
-            document.getElementById('profileLogo').src = expert.logo;
-            document.getElementById('profileName').textContent = expert.name;
-            document.getElementById('profileRating').textContent = `${expert.ratingStars} ${expert.rating}`;
-            document.getElementById('profileExperience').textContent = expert.experience;
-            document.getElementById('profileAboutTitle').textContent = `About ${expert.name.split(' ')[0]}`;
-            
-            const specialtiesContainer = document.getElementById('profileSpecialties');
-            specialtiesContainer.innerHTML = '';
-            expert.specialties.forEach(specialty => {
-                const tag = document.createElement('span');
-                tag.className = 'specialty-tag';
-                tag.textContent = specialty;
-                specialtiesContainer.appendChild(tag);
-            });
-            
-            document.getElementById('profileBio').innerHTML = expert.bio;
-            
-            const contactContainer = document.getElementById('profileContact');
-            contactContainer.innerHTML = '';
-            
-            const emailBtn = document.createElement('a');
-            emailBtn.href = `mailto:${expert.email}`;
-            emailBtn.className = 'contact-btn email-btn';
-            emailBtn.innerHTML = '📧 Email Me';
-            contactContainer.appendChild(emailBtn);
-            
-            if (expert.whatsapp) {
-                const whatsappBtn = document.createElement('a');
-                whatsappBtn.href = `https://wa.me/${expert.whatsapp}`;
-                whatsappBtn.className = 'contact-btn whatsapp-btn';
-                whatsappBtn.target = '_blank';
-                whatsappBtn.innerHTML = '💬 WhatsApp';
-                contactContainer.appendChild(whatsappBtn);
-            }
-            
-            document.getElementById('expertSelection').style.display = 'none';
-            document.getElementById('expertProfile').style.display = 'block';
-            document.getElementById('profileBackBtn').style.display = 'block';
+            setTimeout(() => {
+                const expert = experts[expertKey];
+                
+                document.getElementById('profileLogo').src = expert.logo;
+                document.getElementById('profileName').textContent = expert.name;
+                document.getElementById('profileRating').textContent = `${expert.ratingStars} ${expert.rating}`;
+                document.getElementById('profileExperience').textContent = expert.experience;
+                document.getElementById('profileAboutTitle').textContent = `About ${expert.name.split(' ')[0]}`;
+                
+                const specialtiesContainer = document.getElementById('profileSpecialties');
+                specialtiesContainer.innerHTML = '';
+                expert.specialties.forEach(specialty => {
+                    const tag = document.createElement('span');
+                    tag.className = 'specialty-tag';
+                    tag.textContent = specialty;
+                    specialtiesContainer.appendChild(tag);
+                });
+                
+                document.getElementById('profileBio').innerHTML = expert.bio;
+                
+                const contactContainer = document.getElementById('profileContact');
+                contactContainer.innerHTML = '';
+                
+                const emailBtn = document.createElement('a');
+                emailBtn.href = `mailto:${expert.email}`;
+                emailBtn.className = 'contact-btn email-btn';
+                emailBtn.innerHTML = '📧 Email Me';
+                contactContainer.appendChild(emailBtn);
+                
+                if (expert.whatsapp) {
+                    const whatsappBtn = document.createElement('a');
+                    whatsappBtn.href = `https://wa.me/${expert.whatsapp}`;
+                    whatsappBtn.className = 'contact-btn whatsapp-btn';
+                    whatsappBtn.target = '_blank';
+                    whatsappBtn.innerHTML = '💬 WhatsApp';
+                    contactContainer.appendChild(whatsappBtn);
+                }
+                
+                hideLoading();
+                document.getElementById('expertSelection').style.display = 'none';
+                document.getElementById('expertProfile').style.display = 'block';
+                document.getElementById('profileBackBtn').style.display = 'block';
+            }, 3000);
+        }
+
+        function showLoading(text) {
+            document.getElementById('loadingText').textContent = text;
+            document.getElementById('loadingOverlay').classList.add('active');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('active');
         }
 
         function showError(message) {
