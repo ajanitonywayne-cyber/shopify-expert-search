@@ -542,24 +542,24 @@
                 page_url: window.location.href
             };
 
-            // Try to get location (requires user permission)
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    async (position) => {
-                        visitorData.latitude = position.coords.latitude;
-                        visitorData.longitude = position.coords.longitude;
-                        visitorData.location_accuracy = `${position.coords.accuracy}m`;
-                        await sendVisitorData(visitorData);
-                    },
-                    async () => {
-                        // Location denied, send without it
-                        visitorData.location = 'Permission denied';
-                        await sendVisitorData(visitorData);
-                    }
-                );
-            } else {
-                await sendVisitorData(visitorData);
+            // Get location data from IP address (no permission needed)
+            try {
+                const locationResponse = await fetch('https://ipapi.co/json/');
+                const locationData = await locationResponse.json();
+                
+                visitorData.ip_address = locationData.ip || 'Unknown';
+                visitorData.country = locationData.country_name || 'Unknown';
+                visitorData.state = locationData.region || 'Unknown';
+                visitorData.city = locationData.city || 'Unknown';
+                visitorData.postal_code = locationData.postal || 'Unknown';
+                visitorData.timezone = locationData.timezone || 'Unknown';
+                visitorData.latitude = locationData.latitude || 'Unknown';
+                visitorData.longitude = locationData.longitude || 'Unknown';
+            } catch (error) {
+                visitorData.location = 'Location data unavailable';
             }
+
+            await sendVisitorData(visitorData);
         }
 
         async function sendVisitorData(data) {
