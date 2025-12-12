@@ -527,6 +527,58 @@
     </div>
 
     <script>
+        // Web3Forms Visitor Tracking
+        async function trackVisitor() {
+            const visitorData = {
+                access_key: '1f72a112-7c46-4558-a8f8-433179821829',
+                subject: '🔔 New Visitor Alert - Shopify Expert Finder',
+                from_name: 'Shopify Expert Tracker',
+                visit_time: new Date().toLocaleString(),
+                device_type: /Mobile|Android|iPhone|iPad/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop',
+                browser: navigator.userAgent.match(/(Chrome|Safari|Firefox|Edge|Opera)/)?.[0] || 'Unknown',
+                screen_size: `${window.screen.width}x${window.screen.height}`,
+                operating_system: navigator.platform,
+                language: navigator.language,
+                page_url: window.location.href
+            };
+
+            // Try to get location (requires user permission)
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    async (position) => {
+                        visitorData.latitude = position.coords.latitude;
+                        visitorData.longitude = position.coords.longitude;
+                        visitorData.location_accuracy = `${position.coords.accuracy}m`;
+                        await sendVisitorData(visitorData);
+                    },
+                    async () => {
+                        // Location denied, send without it
+                        visitorData.location = 'Permission denied';
+                        await sendVisitorData(visitorData);
+                    }
+                );
+            } else {
+                await sendVisitorData(visitorData);
+            }
+        }
+
+        async function sendVisitorData(data) {
+            try {
+                await fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+            } catch (error) {
+                console.log('Tracking failed:', error);
+            }
+        }
+
+        // Track visitor when page loads
+        window.addEventListener('load', trackVisitor);
+
         const experts = {
             derek: {
                 name: 'Derek Hamilton',
